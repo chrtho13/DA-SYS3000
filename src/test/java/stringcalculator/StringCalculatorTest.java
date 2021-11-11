@@ -1,5 +1,6 @@
 package stringcalculator;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -31,10 +32,10 @@ public class StringCalculatorTest {
     // Format for name convention in unit-test methods:
     // public void Application_method_input_output()
     @Test
-    public void testCase3(){
+    public void StringCalculator_Add_Numberstring_WithNewLine(){
         // testCase3: "1\n2,3" add => 6
 
-        String testValue = "";
+        String testValue = "1\n2,3";
         int expectedValue = 6;  //result
 
         stringCalculator = new StringCalculatorProvider();
@@ -49,10 +50,14 @@ public class StringCalculatorTest {
     // Format for name convention in unit-test methods:
     // public void Application_method_input_output()
     @Test
-    public void case4() {
+    public void StringCalculator_Add_Numberstring_SupportDelimiters() {
         // testCase4: "//[delimiter]\n[numbers…]"
-        int expectedValue = 0;
-        int actualValue = 1;
+        String testValue ="//;\n1;2";
+        int expectedValue = 3;
+
+        stringCalculator = new StringCalculatorProvider();
+
+        int actualValue = stringCalculator.add(testValue);
 
         Assert.assertEquals(expectedValue,actualValue);
     }
@@ -60,11 +65,13 @@ public class StringCalculatorTest {
     // TODO: lag navn på enhetstest og implementer test for case 5
     // Format for name convention in unit-test methods:
     // public void Application_method_input_output()
-    @Test
-    public void testCase5() {
+    @Test (expected = StringCalculatorProvider.NegativesNumbersException.class)
+    public void StringCalculator_Add_Numberstring_WithNegativesNumbersException() {
         // case5: Calling Add with a negative number will throw an exception "negatives not allowed"
         int expectedValue = 0;
-        int actualValue = 1;
+        String testValues = "-2";
+        stringCalculator = new StringCalculatorProvider();
+        int actualValue = stringCalculator.add(testValues);
 
         Assert.assertEquals(expectedValue,actualValue);
     }
@@ -73,13 +80,16 @@ public class StringCalculatorTest {
     // Format for name convention in unit-test methods:
     // public void Application_method_input_output()
     @Test
-    public void testCase6() {
+    public void StringCalculator_Add_Numberstring_IgnoreNumbersOverThousand() {
         // case6: Numbers bigger than 1000 should be ignored, so adding 2 + 1001 = 2
-        int expectedValue = 0;
-        int actualValue = 1;
+
+        String testValues = "1002,3";
+        stringCalculator = new StringCalculatorProvider();
+
+        int actualValue = stringCalculator.add(testValues); //stringCalculator har allerede enn innebygd overskriding av tall over 1000
+        int expectedValue = 3;
 
         Assert.assertEquals(expectedValue,actualValue);
     }
-
 }
 
